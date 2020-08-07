@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from homepage.models import Recipe, Author
+from recipes.models import Recipe, Author
 
 def index_view(request):
 	my_recipes = Recipe.objects.all()

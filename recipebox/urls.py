@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from homepage.views import index_view, post_detail, author_detail
+from recipes.views import index_view, post_detail, author_detail
 
 urlpatterns = [
     path('', index_view),
