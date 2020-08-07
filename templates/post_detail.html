@@ -1,0 +1,11 @@
+<div class="container">
+	{% if not post %}
+		<h1>The recipe you are looking for doesn't seem to exist</h1>
+	{% else %}
+		<h2>{{ post.title }}</h2>
+		<h4>Author: <a href="/author/{{ post.author.id }}/">{{ post.author.name }}</a></h4>
+		<p>Description: {{ post.description }}</p>
+		<h4>Time Required: {{ post.time_required }}</h4>
+		<p>Instructions: {{ post.instructions }}</p>
+	{% endif %}
+</div>

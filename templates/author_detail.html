@@ -1,0 +1,28 @@
+{% comment %} <div class="container">
+	<h1>{{ author.name }}</h1>
+
+	<h4>{{ author.bio }}</h4>
+	<h4>Recipes by this Author:<h4>
+
+		{% for recipe in recipes %}
+			<li>
+				<h3><a href="/post/{{post_id}}/">{{post.title}}</a></h3>
+			</li>
+		{% endfor %}
+	
+</div> {% endcomment %}
+
+
+<div class="container">
+    {% if not author %}
+        <h1>Your author does not exist. {{post.author.name}}</h1>
+    {% else %}
+        <h2>{{author.name}}</h2>
+		<h3>{{author.bio}}</h3>
+        <h4>Recipes by this Author:</h4>
+        {% for post in recipes %}
+            <h3><a href="/post/{{post.id}}/">{{post.title}}</a></h3>
+        {% endfor %}
+
+    {% endif %}
+</div>
