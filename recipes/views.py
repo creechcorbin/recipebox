@@ -13,12 +13,14 @@ def index_view(request):
 
 def post_detail(request, post_id):
 	my_recipe = Recipe.objects.filter(id=post_id).first()
-	return render(request, "post_detail.html", {"post": my_recipe})
+	favorites = request.user.author.favorites.all()
+	return render(request, "post_detail.html", {"post": my_recipe, 'favorites': favorites})
 
 def author_detail(request, author_id):
+	favorites = request.user.author.favorites.all()
 	my_author = Author.objects.filter(id=author_id).first()
 	authored_recipes = Recipe.objects.filter(author=my_author)
-	return render(request, "author_detail.html", {"author": my_author, "recipes": authored_recipes})
+	return render(request, "author_detail.html", {"author": my_author, "recipes": authored_recipes, 'favorites': favorites})
 
 @login_required
 def add_recipe(request):
@@ -37,6 +39,45 @@ def add_recipe(request):
 
 	form = AddRecipeForm()
 	return render(request, "generic_form.html", {"form": form})
+
+def edit_recipe(request, post_id):
+	recipe = Recipe.objects.get(id=post_id)
+	if request.method == 'POST':
+		form = AddRecipeForm(request.POST)
+		if form.is_valid():
+			data = form.cleaned_data
+			recipe.title = data['title']
+			recipe.description = data['description']
+			recipe.time_required = data['time_required']
+			recipe.instructions = data['instructions']
+			recipe.save()
+		return HttpResponseRedirect(reverse("post_detail", args=[recipe.id]))
+	
+	data = {
+		'title': recipe.title,
+		'description': recipe.description,
+		'time_required': recipe.time_required,
+		'instructions': recipe.instructions,
+	}
+	form = AddRecipeForm(initial=data)
+	return render(request, 'generic_form.html', {'form': form})
+
+def add_favorite_view(request, post_id):
+	author = request.user.author
+	recipe = Recipe.objects.get(id=post_id)
+
+	author.favorites.add(recipe)
+
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def remove_favorite_view(request, post_id):
+	author = request.user.author
+	recipe = Recipe.objects.get(id=post_id)
+
+	author.favorites.remove(recipe)
+
+	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 @login_required
 def add_author(request):

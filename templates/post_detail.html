@@ -7,6 +7,14 @@
 		<p>Description: {{ post.description }}</p>
 		<h4>Time Required: {{ post.time_required }}</h4>
 		<p>Instructions: {{ post.instructions }}</p>
+	{% if request.user.is_authenticated == True and post in favorites %}
+		<button><a href='/unfavorite/{{ post.id }}/'>Un-Favorite</a></button>
+	{% elif request.user.is_authenticated == True and post not in favorites %}
+		<button><a href='/favorite/{{ post.id }}/'>Favorite</a></button>
+	{% endif %}
+	{% if user == post.author or user.is_staff %}
+		<a href='/post/{{ post.id }}/edit/'>Edit Post</a>
+	{% endif %}
 	{% endif %}
 	<a href='/'>Home</a>
 </div>

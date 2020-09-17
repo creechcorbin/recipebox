@@ -20,7 +20,10 @@ from recipes import views
 
 urlpatterns = [
     path('', views.index_view, name="homepage"),
-    path('post/<int:post_id>/', views.post_detail),
+    path('favorite/<int:post_id>/', views.add_favorite_view),
+    path('unfavorite/<int:post_id>/', views.remove_favorite_view),
+    path('post/<int:post_id>/edit/', views.edit_recipe),
+    path('post/<int:post_id>/', views.post_detail, name='post_detail'),
     path('author/<int:author_id>/', views.author_detail),
     path('addrecipe/', views.add_recipe, name="addrecipe"),
     path('addauthor/', views.add_author, name="addauthor"),
